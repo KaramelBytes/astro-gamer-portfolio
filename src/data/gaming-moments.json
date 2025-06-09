@@ -1,0 +1,62 @@
+[
+  {
+    "id": "elden-ring-victory",
+    "title": "Elden Ring Victory",
+    "game": "Elden Ring",
+    "date": "2023-04-15",
+    "image": "elden-ring-boss.jpg",
+    "alt": "Final boss defeated in Elden Ring with 2% health remaining",
+    "tags": ["Soulslike", "Boss Fight", "Victory"],
+    "favorite": true,
+    "width": 1920,
+    "height": 1080
+  },
+  {
+    "id": "skyrim-dragon",
+    "title": "Dragon Encounter",
+    "game": "The Elder Scrolls V: Skyrim",
+    "date": "2023-03-22",
+    "image": "skyrim-dragon.jpg",
+    "alt": "Dragon flying over Whiterun at sunset",
+    "tags": ["RPG", "Open World", "Dragon"],
+    "favorite": false,
+    "width": 1920,
+    "height": 1080
+  },
+  {
+    "id": "minecraft-castle",
+    "title": "Castle Build",
+    "game": "Minecraft",
+    "date": "2023-05-10",
+    "image": "minecraft-castle.jpg",
+    "alt": "Massive medieval castle built in survival mode",
+    "tags": ["Building", "Survival", "Creative"],
+    "favorite": true,
+    "width": 1920,
+    "height": 1080
+  },
+  {
+    "id": "cyberpunk-night",
+    "title": "Night City Lights",
+    "game": "Cyberpunk 2077",
+    "date": "2023-02-18",
+    "image": "cyberpunk-city.jpg",
+    "alt": "Night city skyline with neon lights reflecting on wet pavement",
+    "tags": ["Open World", "Cyberpunk", "Screenshot"],
+    "favorite": false,
+    "width": 2560,
+    "height": 1440
+  },
+  {
+    "id": "zelda-shrine",
+    "title": "Ancient Shrine",
+    "game": "The Legend of Zelda: Breath of the Wild",
+    "date": "2023-01-30",
+    "image": "zelda-shrine.jpg",
+    "alt": "Ancient shrine discovered in the mountains at dawn",
+    "tags": ["Adventure", "Puzzle", "Exploration"],
+    "favorite": true,
+    "width": 1920,
+    "height": 1080
+  }
+]

@@ -1,0 +1,105 @@
+---
+/**
+ * Gallery Component
+ * 
+ * Displays a filterable grid of game-related images with the ability to filter by game and tags.
+ * Handles URL parameters for deep linking to specific filters.
+ * 
+ * @prop {GalleryItem[]} items - Array of gallery items to display
+ * @prop {string[]} games - List of unique game names for filtering
+ * @prop {string[]} tags - List of unique tags for filtering
+ */
+import GalleryImage from './GalleryImage.astro';
+import FilterTags from './FilterTags.astro';
+
+type GalleryItem = {
+  id: string;
+  title: string;
+  game: string;
+  date: string;
+  image: string;
+  alt: string;
+  tags: string[];
+  favorite?: boolean;
+  width: number;
+  height: number;
+};
+
+const { items, games, tags } = Astro.props as {
+  items: GalleryItem[];
+  games: string[];
+  tags: string[];
+};
+const selectedGame = Astro.url.searchParams.get('game') || 'all';
+const selectedTag = Astro.url.searchParams.get('tag') || 'all';
+
+// Filter items based on selected game and tag
+// Matches 'all' or the specific selection for both game and tag
+const filteredItems = items.filter(item => {
+  const gameMatch = selectedGame === 'all' || item.game === selectedGame;
+  const tagMatch = selectedTag === 'all' || item.tags.includes(selectedTag);
+  return gameMatch && tagMatch;
+});
+---
+
+<div class="gallery-controls">
+  <div class="filter-group">
+    <span class="filter-label">Filter by Game:</span>
+    <FilterTags 
+      items={['all', ...games]} 
+      type="game" 
+      current={selectedGame} 
+    />
+  </div>
+  
+  <div class="filter-group">
+    <span class="filter-label">Filter by Tag:</span>
+    <FilterTags 
+      items={['all', ...tags]} 
+      type="tag" 
+      current={selectedTag} 
+    />
+  </div>
+</div>
+
+{filteredItems.length > 0 ? (
+  <div id="gallery-container" class="masonry-grid">
+    {filteredItems.map((item: GalleryItem) => (
+      <GalleryImage 
+        {...item} 
+        baseUrl="/images/gaming-moments/thumbnails/" 
+      />
+    ))}
+  </div>
+  
+  <link 
+    rel="stylesheet" 
+    href="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.7.2/css/lightgallery-bundle.min.css" 
+    integrity="sha512-nUqPe0+Xak9+4bK98r9e0W0QvVRcc1o4lEexXlKFFZtx27b0YpSOa3KmW1X8X7I3H8Q0JkYdIq0FyE5O0pCA==" 
+    crossorigin="anonymous" 
+    referrerpolicy="no-referrer" 
+  />
+  <style>
+    .lg-backdrop {
+      background-color: rgba(0, 0, 0, 0.9) !important;
+    }
+    .lg-outer .lg-thumb-outer {
+      background-color: #1a1a1a;
+      border-top: 2px solid var(--primary-color);
+    }
+    .lg-outer .lg-thumb-item.active, 
+    .lg-outer .lg-thumb-item:hover {
+      border-color: var(--primary-color);
+    }
+    .lg-actions .lg-next, 
+    .lg-actions .lg-prev {
+      background-color: rgba(0, 0, 0, 0.5);
+      border: 2px solid var(--primary-color);
+    }
+  </style>
+) : (
+  <div class="no-results">
+    <p>No moments found matching your filters.</p>
+    <a href="?game=all&tag=all" class="reset-filters">Reset filters</a>
+  </div>
+)}

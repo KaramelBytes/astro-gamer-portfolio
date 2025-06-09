@@ -1,0 +1,29 @@
+---
+/**
+ * Displays the biography section with name, tagline, and description
+ * Fetches content from the 'about' collection in the content directory
+ */
+import { getEntry } from 'astro:content';
+
+// Define the shape of the about data
+interface AboutData {
+  name?: string;
+  tagline?: string;
+  description?: string;
+}
+
+// Safely get about entry with fallback values
+const aboutEntry = await getEntry('about', 'index').catch<Awaited<ReturnType<typeof getEntry>>>(() => null);
+const aboutData: AboutData = aboutEntry?.data || {};
+const { 
+  name = 'Your Name', 
+  tagline = 'Your Tagline', 
+  description = 'Your description goes here.' 
+} = aboutData;
+---
+
+<section class="biography">
+  <h2>{name}</h2>
+  <h3>{tagline}</h3>
+  <p>{description}</p>
+</section>

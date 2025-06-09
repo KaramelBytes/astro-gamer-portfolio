@@ -1,0 +1,44 @@
+---
+// src/pages/gaming-moments.astro
+import Layout from '../layouts/MainLayout.astro';
+import Gallery from '../components/gallery/Gallery.astro';
+import gamingMoments from '../data/gaming-moments.json';
+
+// Get unique games and tags for filtering
+const games = [...new Set(gamingMoments.map(m => m.game))];
+const allTags = [...new Set(gamingMoments.flatMap(m => m.tags))];
+---
+
+<Layout title="Gaming Moments">
+  <main class="gallery-container">
+    <h1>Gaming Moments</h1>
+    <p class="subtitle">A collection of my favorite gaming screenshots and memories</p>
+    
+    <Gallery 
+      items={gamingMoments} 
+      games={games}
+      tags={allTags}
+    />
+  </main>
+</Layout>
+
+<style>
+  .gallery-container {
+    padding: 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  
+  .subtitle {
+    color: var(--text-muted);
+    margin-bottom: 2rem;
+    font-size: 1.2rem;
+  }
+  
+  h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+  }
+</style>

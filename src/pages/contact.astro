@@ -1,0 +1,108 @@
+---
+import MainLayout from "../layouts/MainLayout.astro";
+import "../styles/globals.css";
+import GamingAccounts from "../components/react/GamingAccounts";
+---
+
+<MainLayout>
+  <head>
+    <title>Connect & Play</title>
+    <meta
+      name="description"
+      content="Connect with me across various gaming platforms and let's play together!"
+    />
+    <meta property="og:title" content="Connect & Play" />
+    <meta
+      property="og:description"
+      content="Connect with me across various gaming platforms and let's play together!"
+    />
+    <meta property="og:image" content="/og-img.jpg" />
+    <meta property="og:url" content="/contact" />
+    <meta name="twitter:card" content="summary_large_image" />
+  </head>
+
+  <body>
+    <section class="contact-container">
+      <div class="pixel-border">
+        <h1 class="contact-title">LET'S CONNECT & PLAY!</h1>
+        <div class="divider"></div>
+        <p class="contact-intro">
+          Whether it's teaming up in co-op, battling it out in PvP, or just
+          chatting about the latest games, I'm always looking forward to meeting
+          new players and making great gaming memories.
+        </p>
+      </div>
+
+      <div class="pixel-border">
+        <GamingAccounts client:load />
+      </div>
+    </section>
+  </body>
+</MainLayout>
+
+<style>
+  .pixel-border {
+    border: 4px solid var(--text-color);
+    padding: 2rem;
+    margin-bottom: 2rem;
+    background: var(--bg-color);
+    box-shadow: 8px 8px 0 var(--accent-color);
+    position: relative;
+    transition: all 0.2s ease;
+  }
+
+  .pixel-border:hover {
+    box-shadow: 12px 12px 0 var(--accent-color);
+    transform: translate(-2px, -2px);
+  }
+
+  .divider {
+    height: 4px;
+    background: var(--accent-color);
+    margin: 1.5rem 0;
+    position: relative;
+  }
+
+  .divider::before {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: 0;
+    height: 12px;
+    width: 20%;
+    background: var(--bg-color);
+    border: 4px solid var(--text-color);
+  }
+
+  .contact-title {
+    font-size: 2.5rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin: 0 0 1rem;
+    color: var(--text-color);
+    text-shadow: 2px 2px 0 var(--accent-color);
+  }
+
+  .contact-intro {
+    font-size: 1.2rem;
+    line-height: 1.6;
+    max-width: 800px;
+    margin: 0 auto;
+    color: var(--text-color);
+  }
+
+  @media (max-width: 768px) {
+    .pixel-border {
+      padding: 1.5rem;
+      margin: 0 1rem 2rem;
+    }
+    
+    .contact-title {
+      font-size: 2rem;
+    }
+    
+    .contact-intro {
+      font-size: 1rem;
+    }
+  }
+</style>

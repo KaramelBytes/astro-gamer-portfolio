@@ -1,0 +1,159 @@
+---
+// @ts-check
+import { getEntry, getCollection } from 'astro:content';
+import type { GameData } from '../types/content';
+import MainLayout from "../layouts/MainLayout.astro";
+import Biography from "../components/Biography.astro";
+import GameCollectionWithModal from "../components/react/GameCollectionWithModal.jsx";
+import { SITE } from "../data/site";
+import "../styles/globals.css";
+
+// Get the about page data
+const aboutEntry = await getEntry('about', 'index');
+if (!aboutEntry) {
+  throw new Error('About entry not found');
+}
+const { name, tagline, description } = aboutEntry.data;
+
+// Get game data on the server side
+async function getGameData() {
+  try {
+    // Get all game entries with their data
+    const allGames = await getCollection('games');
+    
+    // Helper function to filter and format games
+    const getGamesByPrefix = (prefix: string): GameData[] => {
+      return allGames
+        .filter(entry => {
+          if (!entry || !entry.id) return false;
+          return entry.id.startsWith(prefix);
+        })
+        .map(entry => {
+          if (!entry || !entry.data) {
+            console.warn('Invalid game entry:', entry);
+            return null;
+          }
+          
+          const data = entry.data;
+          // Get the slug from the entry ID (format is 'collection/slug')
+          const slug = entry.id.split('/').pop() || '';
+          
+          // Use imageUrl if available, otherwise fall back to image
+          const imageUrl = data.imageUrl || data.image || '';
+          
+          // Handle date fields
+          const now = new Date().toISOString();
+          const createdAt = data.createdAt 
+            ? new Date(data.createdAt).toISOString() 
+            : now;
+            
+          const updatedAt = data.updatedAt 
+            ? new Date(data.updatedAt).toISOString() 
+            : now;
+          
+          const gameData: GameData = {
+            id: entry.id,
+            slug: slug,
+            title: data.title || 'Untitled Game',
+            description: data.description || '',
+            type: data.tabletop ? 'tabletop' : 'video',
+            platform: data.platform,
+            developer: data.developer,
+            publisher: data.publisher,
+            releaseDate: data.releaseDate,
+            genres: data.genres || [],
+            rating: data.rating,
+            playtime: data.playtime,
+            completed: data.completed || false,
+            completedDate: data.completedDate,
+            review: data.review,
+            currentlyPlaying: data.currentlyPlaying || false,
+            favorite: data.favorite || false,
+            tabletop: data.tabletop || false,
+            imageUrl: imageUrl,
+            createdAt: createdAt,
+            updatedAt: updatedAt,
+          };
+          
+          return gameData;
+        })
+        .filter((game): game is GameData => game !== null);
+    };
+
+    const favoriteGames = getGamesByPrefix('favorite-games/');
+    const currentlyPlaying = getGamesByPrefix('currently-playing/');
+    const tabletopGames = getGamesByPrefix('tabletop-games/');
+    const currentlyPlayingTabletop = getGamesByPrefix('currently-playing-tabletop/');
+
+    return {
+      videoGames: {
+        title: 'Video Games',
+        categories: [
+          { 
+            title: 'Currently Playing', 
+            games: currentlyPlaying
+          },
+          { 
+            title: 'All-Time Favorites', 
+            games: favoriteGames
+          },
+        ]
+      },
+      tabletopGames: {
+        title: 'Tabletop Games',
+        categories: [
+          { 
+            title: 'Currently Playing', 
+            games: currentlyPlayingTabletop
+          },
+          { 
+            title: 'All-Time Favorites', 
+            games: tabletopGames
+          },
+        ]
+      }
+    };
+  } catch (error) {
+    console.error('Error fetching game data:', error);
+    return {
+      videoGames: { title: 'Video Games', categories: [] },
+      tabletopGames: { title: 'Tabletop Games', categories: [] },
+    };
+  }
+}
+
+const gameData = await getGameData();
+console.log('Game Data:', JSON.stringify(gameData, null, 2));
+---
+
+<MainLayout>
+  <head>
+    <title>{SITE.seo.title}</title>
+    <meta name="description" content={SITE.seo.description} />
+    <meta name="keywords" content={SITE.seo.keywords} />
+    <meta property="og:title" content={SITE.seo.title} />
+    <meta property="og:description" content={SITE.seo.description} />
+    <meta property="og:image" content={new URL(SITE.seo.ogImage, SITE.url).href} />
+    <meta property="og:url" content={SITE.url} />
+    <meta name="twitter:card" content="summary_large_image" />
+  </head>
+
+  <section class="hero">
+    <h1>Welcome to {SITE.title}</h1>
+    <p>Gamer. Streamer. Geek. Nerd.</p>
+  </section>
+
+  <section class="about">
+    <Biography />
+  </section>
+
+  <section class="games">
+    <GameCollectionWithModal gameCategories={gameData} client:load />
+    <script>
+      // This script runs on the client side
+      document.addEventListener('DOMContentLoaded', () => {
+        console.log('Game Collection component should be mounted');
+      });
+    </script>
+  </section>
+</MainLayout>

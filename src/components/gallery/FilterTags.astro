@@ -1,0 +1,81 @@
+---
+// src/components/gallery/FilterTags.astro
+const { items, type, current } = Astro.props;
+
+// Format the display text for each item
+const formatItem = (item: string) => {
+  if (item === 'all') return 'All';
+  return item;
+};
+---
+
+<div class="filter-tags">
+  {items.map((item: string) => {
+    const isActive = item === current || (item === 'all' && current === 'all');
+    const url = new URL(Astro.url);
+    url.searchParams.set(type, item);
+    
+    // Reset other filter when selecting 'all'
+    if (item === 'all') {
+      url.searchParams.set(type, 'all');
+    }
+    
+    return (
+      <a 
+        href={url.toString()}
+        class={`filter-tag ${isActive ? 'active' : ''}`}
+        aria-current={isActive ? 'true' : 'false'}
+      >
+        {formatItem(item)}
+      </a>
+    );
+  })}
+</div>
+
+<style>
+  .filter-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 0.5rem 0;
+  }
+  
+  .filter-tag {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    background: var(--card-bg);
+    border: 2px solid var(--text-color);
+    color: var(--text-color);
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+    cursor: pointer;
+  }
+  
+  .filter-tag:hover {
+    background: var(--accent-color);
+    color: var(--text-on-accent);
+    transform: translateY(-1px);
+  }
+  
+  .filter-tag.active {
+    background: var(--accent-color);
+    color: var(--text-on-accent);
+    font-weight: bold;
+    border-color: var(--accent-color);
+  }
+  
+  .filter-label {
+    margin-right: 0.5rem;
+    font-weight: bold;
+    font-size: 0.9rem;
+  }
+  
+  .filter-group {
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+</style>

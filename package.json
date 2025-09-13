@@ -13,7 +13,7 @@
     "@astrojs/sitemap": "^3.2.1",
     "@types/react": "^19.0.8",
     "@types/react-dom": "^19.0.3",
-    "astro": "^5.12.8",
+    "astro": "^5.13.1",
     "dotenv": "^16.5.0",
     "lightgallery.js": "^1.4.0",
     "prop-types": "^15.8.1",

@@ -5,6 +5,14 @@
 [![QA/Debug: Gemini 2.5 Pro](https://img.shields.io/badge/QA%2FDebug-Gemini%202.5%20Pro-blueviolet)](https://deepmind.google/technologies/gemini/)
 [![IDE: Windsurf](https://img.shields.io/badge/IDE-Windsurf-black)](https://windsurf.ai/)
 
+## Status
+
+**Archived - no longer maintained.**
+
+This repository represents work from an earlier period and is preserved for historical reference only. It is not actively maintained, dependencies may be outdated, and it should not be used as a production reference. 
+
+This project will be removed from public view after related references are retired. 
+
 ## 🌐 [Live Demo](https://astro-gamer-portfolio.vercel.app/)
 
 A vibe-coded, modern, and responsive gaming portfolio built with Astro. Showcase your game collection, favorite gaming moments, and connect with fellow gamers. Designed for streamers, content creators, and gaming enthusiasts who want a site that reflects their unique style and passion for games.
